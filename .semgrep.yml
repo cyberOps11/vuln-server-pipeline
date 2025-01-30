@@ -1,0 +1,107 @@
+rules:
+  # === Python Rules ===
+  - id: python.security.audit
+    severity: ERROR
+    pattern: 'subprocess.*'
+    message: "Potentially insecure subprocess call detected."
+    languages: [python]
+
+  - id: python.security.audit
+    severity: ERROR
+    pattern: 'eval($EXPR)'
+    message: "Unsafe eval usage detected. Avoid using eval with untrusted input."
+    languages: [python]
+
+  - id: python.security.audit
+    severity: ERROR
+    pattern: 'os.system($CMD)'
+    message: "Unsafe os.system call detected. Avoid using os.system for untrusted input."
+    languages: [python]
+
+  # === JavaScript Rules ===
+  - id: javascript.security.audit
+    severity: ERROR
+    pattern: 'eval($EXPR)'
+    message: "Unsafe eval usage detected. Avoid using eval with untrusted input."
+    languages: [javascript]
+
+  - id: javascript.security.audit
+    severity: ERROR
+    pattern: 'innerHTML = $EXPR'
+    message: "Possible XSS vulnerability: Avoid using innerHTML with untrusted input."
+    languages: [javascript]
+
+  - id: javascript.security.audit
+    severity: ERROR
+    pattern: 'document.write($EXPR)'
+    message: "Possible XSS vulnerability: Avoid using document.write with untrusted input."
+    languages: [javascript]
+  
+  - id: javascript.security.audit
+    severity: ERROR
+    pattern: 'setTimeout(eval($EXPR), $TIMEOUT)'
+    message: "Unsafe eval used inside setTimeout, potentially dangerous."
+    languages: [javascript]
+
+  # === CWE Top 25 Rules ===
+  - id: cwe-79
+    severity: ERROR
+    message: "Cross-site Scripting (XSS) detected."
+    pattern: 'innerHTML = $EXPR'
+    languages: [javascript, python, php]
+
+  - id: cwe-89
+    severity: ERROR
+    message: "SQL Injection detected."
+    pattern: "execute($QUERY)"
+    languages: [python, php, javascript]
+
+  - id: cwe-20
+    severity: ERROR
+    message: "Improper Input Validation detected."
+    pattern: 'input($VAR)'
+    languages: [python, java, javascript]
+
+  - id: cwe-119
+    severity: ERROR
+    message: "Buffer Overflow detected."
+    pattern: 'strcpy($DEST, $SRC)'
+    languages: [c, c++, python]
+
+  - id: cwe-200
+    severity: ERROR
+    message: "Information Exposure detected."
+    pattern: 'console.log($DATA)'
+    languages: [javascript, python, go]
+
+  - id: cwe-352
+    severity: ERROR
+    message: "Cross-Site Request Forgery (CSRF) detected."
+    pattern: 'window.location.href = $URL'
+    languages: [javascript]
+
+  - id: cwe-200
+    severity: ERROR
+    message: "Information Exposure: Logging sensitive data."
+    pattern: 'console.log($DATA)'
+    languages: [javascript, python]
+
+  - id: cwe-22
+    severity: ERROR
+    message: "Path Traversal detected."
+    pattern: 'open($FILE)'
+    languages: [python, java, ruby]
+
+  # === Miscellaneous Rules ===
+  - id: security.best-practices
+    severity: ERROR
+    pattern: 'password = $PASSWORD'
+    message: "Hardcoded passwords detected. Avoid storing passwords in the code."
+    languages: [python, javascript, go, ruby, php, java]
+  
+  - id: security.best-practices
+    severity: WARNING
+    pattern: 'console.log($DATA)'
+    message: "Logging sensitive data (e.g., passwords, tokens)."
+    languages: [javascript]
+
